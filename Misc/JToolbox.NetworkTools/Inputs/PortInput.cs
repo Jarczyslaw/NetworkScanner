@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace JToolbox.NetworkTools
+namespace JToolbox.NetworkTools.Inputs
 {
     public class PortInput
     {

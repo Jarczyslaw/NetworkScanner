@@ -1,6 +1,8 @@
 ﻿using JToolbox.Core.Utilities;
 using JToolbox.Desktop.Dialogs;
 using JToolbox.NetworkTools;
+using JToolbox.NetworkTools.Inputs;
+using JToolbox.NetworkTools.Results;
 using JToolbox.WinForms.Core.Extensions;
 using System;
 using System.Collections.Generic;
@@ -14,15 +16,15 @@ using System.Windows.Forms;
 
 namespace NetworkScanner
 {
-    public partial class MainForm : Form
+    public partial class NetworkScannerForm : Form
     {
         private readonly PingScanner pingScanner = new PingScanner();
         private readonly IDialogsService dialogsService = new DialogsService();
-        private List<GridItem> devices = new List<GridItem>();
+        private List<DeviceGridItem> devices = new List<DeviceGridItem>();
         private readonly Stopwatch stopwatch = new Stopwatch();
         private CancellationTokenSource cancellationTokenSource;
 
-        public MainForm()
+        public NetworkScannerForm()
         {
             InitializeComponent();
             Initialize();
@@ -50,14 +52,10 @@ namespace NetworkScanner
             }
         }
 
-        public List<GridItem> Scanned
+        public List<DeviceGridItem> Devices
         {
-            get => grid.DataSource as List<GridItem>;
-            set
-            {
-                grid.DataSource = null;
-                grid.DataSource = value;
-            }
+            get => grdDevices.Items;
+            set => grdDevices.Items = value;
         }
 
         public int Timeout
@@ -74,13 +72,13 @@ namespace NetworkScanner
 
         private void UpdateGrid()
         {
-            Scanned = devices;
+            Devices = devices;
         }
 
         private void Initialize()
         {
             pingScanner.OnDeviceScanned += PingScanner_OnDeviceScanned;
-            pingScanner.OnScanComplete += PingScanner_OnScanComplete;
+            pingScanner.OnDevicesScanComplete += PingScanner_OnScanComplete;
 
             Status = ScanStatus.Idle;
             Workers = Environment.ProcessorCount * 2;
@@ -104,14 +102,14 @@ namespace NetworkScanner
         {
             this.SafeInvoke(() =>
             {
-                devices.Add(new GridItem
+                devices.Add(new DeviceGridItem
                 {
-                    Address = result.Address.ToString(),
+                    Address = result.Address,
                     Id = devices.Count + 1,
                     Status = result.Reply.Status
                 });
                 devices = devices.OrderBy(d => d.Status == IPStatus.Success ? 0 : 1)
-                    .ThenBy(d => Version.Parse(d.Address))
+                    .ThenBy(d => Version.Parse(d.Address.ToString()))
                     .ToList();
                 UpdateGrid();
             });
@@ -160,6 +158,21 @@ namespace NetworkScanner
             catch (Exception exc)
             {
                 dialogsService.ShowException(exc);
+            }
+        }
+
+        private void btnScanPorts_Click(object sender, EventArgs e)
+        {
+            if (grdDevices.SelectedItem != null)
+            {
+                if (grdDevices.SelectedItem.Status != IPStatus.Success)
+                {
+                    dialogsService.ShowError("Device is not reachable");
+                    return;
+                }
+
+                var portScanner = new PortScannerForm(grdDevices.SelectedItem.Address);
+                portScanner.Show();
             }
         }
     }

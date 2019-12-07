@@ -2,14 +2,15 @@
 using System.Net;
 using System.Threading;
 
-namespace JToolbox.NetworkTools
+namespace JToolbox.NetworkTools.Inputs
 {
-    public class PingScanInput
+    public class PortScanInput
     {
-        public IPAddress StartAddress { get; set; }
-        public IPAddress EndAddress { get; set; }
+        public IPAddress Address { get; set; }
         public int Workers { get; set; } = Environment.ProcessorCount;
-        public int Timeout { get; set; } = 100;
+        public int StartPort { get; set; }
+        public int EndPort { get; set; }
+        public int Timeout { get; set; } = 200;
         public int Retries { get; set; } = 1;
         public CancellationToken CancellationToken { get; set; } = CancellationToken.None;
     }

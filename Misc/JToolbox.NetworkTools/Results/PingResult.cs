@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.NetworkInformation;
 
-namespace JToolbox.NetworkTools
+namespace JToolbox.NetworkTools.Results
 {
     public class PingResult
     {
