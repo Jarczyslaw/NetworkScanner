@@ -45,15 +45,18 @@
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnScanPorts = new System.Windows.Forms.Button();
+            this.nudRetries = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudTimeout)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWorkers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdDevices)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudRetries)).BeginInit();
             this.SuspendLayout();
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(271, 64);
+            this.btnCancel.Location = new System.Drawing.Point(271, 90);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 23);
             this.btnCancel.TabIndex = 0;
@@ -110,7 +113,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(15, 64);
+            this.btnStart.Location = new System.Drawing.Point(15, 90);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(253, 23);
             this.btnStart.TabIndex = 8;
@@ -193,14 +196,14 @@
             this.Column2,
             this.Column3});
             this.grdDevices.Items = null;
-            this.grdDevices.Location = new System.Drawing.Point(15, 93);
+            this.grdDevices.Location = new System.Drawing.Point(15, 119);
             this.grdDevices.MultiSelect = false;
             this.grdDevices.Name = "grdDevices";
             this.grdDevices.ReadOnly = true;
             this.grdDevices.RowHeadersVisible = false;
             this.grdDevices.SelectedIndex = null;
             this.grdDevices.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grdDevices.Size = new System.Drawing.Size(356, 409);
+            this.grdDevices.Size = new System.Drawing.Size(356, 383);
             this.grdDevices.TabIndex = 13;
             // 
             // Column1
@@ -235,11 +238,44 @@
             this.btnScanPorts.UseVisualStyleBackColor = true;
             this.btnScanPorts.Click += new System.EventHandler(this.btnScanPorts_Click);
             // 
+            // nudRetries
+            // 
+            this.nudRetries.Location = new System.Drawing.Point(90, 64);
+            this.nudRetries.Maximum = new decimal(new int[] {
+            256,
+            0,
+            0,
+            0});
+            this.nudRetries.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudRetries.Name = "nudRetries";
+            this.nudRetries.Size = new System.Drawing.Size(100, 20);
+            this.nudRetries.TabIndex = 15;
+            this.nudRetries.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 66);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(43, 13);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Retries:";
+            // 
             // NetworkScannerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 556);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.nudRetries);
             this.Controls.Add(this.btnScanPorts);
             this.Controls.Add(this.grdDevices);
             this.Controls.Add(this.label4);
@@ -261,6 +297,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudTimeout)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWorkers)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdDevices)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudRetries)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -285,6 +322,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.Button btnScanPorts;
+        private System.Windows.Forms.NumericUpDown nudRetries;
+        private System.Windows.Forms.Label label5;
     }
 }
 

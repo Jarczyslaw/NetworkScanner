@@ -70,6 +70,12 @@ namespace NetworkScanner
             set => nudWorkers.Value = value;
         }
 
+        public int Retries
+        {
+            get => (int)nudRetries.Value;
+            set => nudRetries.Value = value;
+        }
+
         private void UpdateGrid()
         {
             Devices = devices;
@@ -77,6 +83,8 @@ namespace NetworkScanner
 
         private void Initialize()
         {
+            grdDevices.OnItemDoubleClick += (_, __, ___) => StartPortScan();
+
             pingScanner.OnDeviceScanned += PingScanner_OnDeviceScanned;
             pingScanner.OnDevicesScanComplete += PingScanner_OnScanComplete;
 
@@ -128,11 +136,11 @@ namespace NetworkScanner
                 Status = ScanStatus.Scanning;
                 await pingScanner.PingScan(new PingScanInput
                 {
-                    StartAddress = StartAddress,
-                    EndAddress = EndAddress,
+                    Addresses = NetworkUtils.GetAddressesInRange(StartAddress, EndAddress),
                     Workers = Workers,
                     Timeout = Timeout,
-                    CancellationToken = cancellationTokenSource.Token
+                    CancellationToken = cancellationTokenSource.Token,
+                    Retries = Retries
                 });
             }
             catch (Exception exc)
@@ -162,6 +170,11 @@ namespace NetworkScanner
         }
 
         private void btnScanPorts_Click(object sender, EventArgs e)
+        {
+            StartPortScan();
+        }
+
+        private void StartPortScan()
         {
             if (grdDevices.SelectedItem != null)
             {

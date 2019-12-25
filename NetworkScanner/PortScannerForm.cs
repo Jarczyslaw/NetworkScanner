@@ -1,5 +1,6 @@
 ﻿using JToolbox.Desktop.Dialogs;
 using JToolbox.NetworkTools;
+using JToolbox.NetworkTools.Clients;
 using JToolbox.NetworkTools.Inputs;
 using JToolbox.NetworkTools.Results;
 using JToolbox.WinForms.Core.Extensions;
@@ -22,6 +23,8 @@ namespace NetworkScanner
         private List<PortGridItem> ports = new List<PortGridItem>();
         private readonly Stopwatch stopwatch = new Stopwatch();
         private CancellationTokenSource cancellationTokenSource;
+        private PortType currentPortType;
+        private readonly ClientFactory clientFactory = new ClientFactory();
 
         public PortScannerForm(IPAddress address)
         {
@@ -76,6 +79,12 @@ namespace NetworkScanner
             get => (PortType)cbPortTypes.SelectedValue;
         }
 
+        public int Retries
+        {
+            get => (int)nudRetries.Value;
+            set => nudRetries.Value = value;
+        }
+
         private void UpdateGrid()
         {
             Ports = ports;
@@ -97,16 +106,15 @@ namespace NetworkScanner
         {
             cbPortTypes.DisplayMember = "Key";
             cbPortTypes.ValueMember = "Value";
-            var types = new List<KeyValuePair<string, PortType>>
+            cbPortTypes.DataSource = new List<KeyValuePair<string, PortType>>
             {
                 new KeyValuePair<string, PortType>(nameof(PortType.TCP), PortType.TCP),
                 new KeyValuePair<string, PortType>(nameof(PortType.UDP), PortType.UDP)
             };
-            cbPortTypes.DataSource = types;
             cbPortTypes.SelectedValue = PortType.TCP;
         }
 
-        private void PortScanner_OnPortsScanComplete(List<PortResult> results)
+        private void PortScanner_OnPortsScanComplete(List<PortScanResult> results)
         {
             this.SafeInvoke(() =>
             {
@@ -115,16 +123,16 @@ namespace NetworkScanner
             });
         }
 
-        private void PortScanner_OnPortScanned(PortResult result)
+        private void PortScanner_OnPortScanned(IPAddress address, PortResult resultEntry)
         {
             this.SafeInvoke(() =>
             {
                 ports.Add(new PortGridItem
                 {
                     Id = ports.Count + 1,
-                    Number = result.Port,
-                    Opened = result.IsOpen,
-                    Type = result.Type
+                    Number = resultEntry.Port,
+                    Opened = resultEntry.IsOpen,
+                    Type = currentPortType
                 });
                 ports = ports.OrderBy(d => d.Opened ? 0 : 1)
                     .ThenBy(d => d.Number)
@@ -140,19 +148,21 @@ namespace NetworkScanner
             {
                 ports.Clear();
                 UpdateGrid();
+                currentPortType = PortType;
 
                 cancellationTokenSource = new CancellationTokenSource();
                 stopwatch.Restart();
                 Status = ScanStatus.Scanning;
                 await portScanner.PortScan(new PortScanInput
                 {
-                    Address = address,
+                    Addresses = new List<IPAddress> { address },
                     Workers = Workers,
                     Timeout = Timeout,
                     CancellationToken = cancellationTokenSource.Token,
-                    StartPort = StartPort,
-                    EndPort = EndPort
-                }, PortType);
+                    Ports = Enumerable.Range(StartPort, EndPort - StartPort + 1)
+                        .ToList(),
+                    Retries = Retries
+                }, clientFactory.GetClient(currentPortType));
             }
             catch (Exception exc)
             {

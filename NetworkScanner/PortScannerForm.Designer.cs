@@ -41,18 +41,21 @@
             this.nudEndPort = new System.Windows.Forms.NumericUpDown();
             this.nudStartPort = new System.Windows.Forms.NumericUpDown();
             this.grdPorts = new NetworkScanner.Controls.PortsGrid();
-            this.cbPortTypes = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cbPortTypes = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.nudRetries = new System.Windows.Forms.NumericUpDown();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudTimeout)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWorkers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudEndPort)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudStartPort)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdPorts)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudRetries)).BeginInit();
             this.SuspendLayout();
             // 
             // btnCancel
@@ -187,7 +190,7 @@
             this.nudEndPort.Size = new System.Drawing.Size(100, 20);
             this.nudEndPort.TabIndex = 15;
             this.nudEndPort.Value = new decimal(new int[] {
-            100,
+            200,
             0,
             0,
             0});
@@ -210,7 +213,7 @@
             this.nudStartPort.Size = new System.Drawing.Size(100, 20);
             this.nudStartPort.TabIndex = 16;
             this.nudStartPort.Value = new decimal(new int[] {
-            1,
+            100,
             0,
             0,
             0});
@@ -239,24 +242,6 @@
             this.grdPorts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdPorts.Size = new System.Drawing.Size(356, 411);
             this.grdPorts.TabIndex = 17;
-            // 
-            // cbPortTypes
-            // 
-            this.cbPortTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbPortTypes.FormattingEnabled = true;
-            this.cbPortTypes.Location = new System.Drawing.Point(271, 64);
-            this.cbPortTypes.Name = "cbPortTypes";
-            this.cbPortTypes.Size = new System.Drawing.Size(100, 21);
-            this.cbPortTypes.TabIndex = 18;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(198, 67);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(52, 13);
-            this.label5.TabIndex = 19;
-            this.label5.Text = "Port type:";
             // 
             // Column1
             // 
@@ -288,11 +273,62 @@
             this.Column3.Name = "Column3";
             this.Column3.ReadOnly = true;
             // 
+            // cbPortTypes
+            // 
+            this.cbPortTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbPortTypes.FormattingEnabled = true;
+            this.cbPortTypes.Location = new System.Drawing.Point(271, 64);
+            this.cbPortTypes.Name = "cbPortTypes";
+            this.cbPortTypes.Size = new System.Drawing.Size(100, 21);
+            this.cbPortTypes.TabIndex = 18;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(198, 67);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(52, 13);
+            this.label5.TabIndex = 19;
+            this.label5.Text = "Port type:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(12, 67);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(43, 13);
+            this.label6.TabIndex = 20;
+            this.label6.Text = "Retries:";
+            // 
+            // nudRetries
+            // 
+            this.nudRetries.Location = new System.Drawing.Point(90, 65);
+            this.nudRetries.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nudRetries.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudRetries.Name = "nudRetries";
+            this.nudRetries.Size = new System.Drawing.Size(100, 20);
+            this.nudRetries.TabIndex = 21;
+            this.nudRetries.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // PortScannerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 556);
+            this.Controls.Add(this.nudRetries);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.cbPortTypes);
             this.Controls.Add(this.grdPorts);
@@ -317,6 +353,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudEndPort)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudStartPort)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdPorts)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudRetries)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -343,6 +380,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown nudRetries;
     }
 }
 
